@@ -1,103 +1,102 @@
+'use client';
 import Image from "next/image";
+import {ChevronLeft, ChevronRight, MoveRight} from "lucide-react";
+import {useState} from "react";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    const [sliderNo, setSliderNo] = useState(0);
+    const [isAnimating, setIsAnimating] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    const sliderSwitch = (()=>{
+        switch (sliderNo) {
+            case 1:
+                return (<Image src={'/slide2.png'} alt={'furn.png'} fill={true} objectFit={'cover'} />)
+            case 2:
+                return (<Image src={'/slide3.png'} alt={'furn.png'} fill={true} objectFit={'cover'} />)
+            default:
+                return (<Image src={'/slide1.png'} alt={'furn.png'} fill={true} objectFit={'cover'} />)
+        }
+    })
+
+    const prevSlider = (()=>{
+        setIsAnimating(true);
+        setTimeout(()=>{
+            if (sliderNo === 0){
+                setSliderNo(2);
+            } else if (sliderNo === 1){
+                setSliderNo(0);
+            } else if (sliderNo === 2){
+                setSliderNo(1);
+            }
+            setIsAnimating(false);
+        }, 500)
+    })
+
+    const nextSlider = (()=>{
+        setIsAnimating(true);
+        setTimeout(()=>{
+            if (sliderNo === 2){
+                setSliderNo(0);
+            } else {
+                setSliderNo(sliderNo + 1);
+            }
+            setIsAnimating(false);
+        }, 500)
+
+    })
+
+  return (
+    <div className="overflow-x-hidden w-full h-full flex flex-col items-center justify-center bg-white relative">
+      <div className={'flex lg:flex-row flex-col lg:h-[67.5vh] md:h-[130vh] h-screen w-full'}>
+        <div className={'relative lg:w-[60%] w-full h-full'}>
+            <div className={`${isAnimating ? 'slide-exit' : 'slide-enter'}`}>
+                {sliderSwitch()}
+            </div>
+            <div className={'lg:hidden flex content-center items-center space-0 mt-6 absolute bottom-0 right-0'}>
+                <button className={'bg-black p-6 cursor-pointer hover:bg-gray-700'} onClick={prevSlider}>
+                    <ChevronLeft color={'white'} size={'26px'} />
+                </button>
+                <button className={'bg-black p-6 cursor-pointer hover:bg-gray-700'} onClick={nextSlider}>
+                    <ChevronRight color={'white'} size={'26px'} />
+                </button>
+            </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className={'relative lg:w-[40%] w-full h-full'}>
+            <div className={'bg-white pt-0 px-12 flex flex-col content-center justify-center space-y-5 h-full'}>
+                <h2 className={'font-semibold text-5xl text-black leading-10'}>Discover innovative ways to decorate</h2>
+                <p className={'text-base leading-snug text-gray-500 font-medium'}>
+                    We provide unmatched quality, comfort, and style for property owners across the country. Our experts combine form and function in bringing your vision to life. Create a room in your own style with our collection and make your property a reflection of you and what you love.
+                </p>
+                <div className={'flex content-center items-center space-x-4 mt-3'}>
+                    <p className={'text-base font-medium leading-none tracking-[12.50px]'}>SHOP NOW</p>
+                    <MoveRight />
+                </div>
+            </div>
+            <div className={'lg:flex hidden content-center items-center space-0 mt-6 absolute bottom-0'}>
+                <button className={'bg-black p-6 cursor-pointer hover:bg-gray-700'} onClick={prevSlider}>
+                    <ChevronLeft color={'white'} size={'26px'} />
+                </button>
+                <button className={'bg-black p-6 cursor-pointer hover:bg-gray-700'} onClick={nextSlider}>
+                    <ChevronRight color={'white'} size={'26px'} />
+                </button>
+            </div>
+        </div>
+      </div>
+      <div className={'lg:inline-flex md:flex-row flex-col justify-center items-center overflow-hidden'}>
+        <div className={'h-74 relative overflow-hidden lg:w-[25%] w-full'}>
+            <Image src={'/furn.png'} alt={'furn.png'} fill={true} objectFit={'cover'} />
+        </div>
+        <div className={'bg-white lg:w-[42%] w-full lg:h-74 h-full relative overflow-hidden lg:py-4 py-16 lg:px-12 px-16 flex flex-col content-center justify-center'}>
+                <h3 className={'font-bold text-base leading-snug text-black tracking-[7px] mb-4'}>ABOUT OUR FURNITURE</h3>
+                <p className={'text-base leading-snug text-gray-500 font-medium'}>
+                    Our multifunctional collection blends design and function to suit your individual taste. Make each room unique, or pick a cohesive theme that best express your interests and what inspires you. Find the furniture pieces you need, from traditional to contemporary styles or anything in between. Product specialists are available to help you create your dream space.
+                </p>
+        </div>
+        <div className={'h-74 relative overflow-hidden lg:w-[33%] w-full'}>
+            <Image src={'/chair.png'} alt={'furn.png'} fill={true} objectFit={'cover'} />
+        </div>
+      </div>
+
     </div>
   );
 }
